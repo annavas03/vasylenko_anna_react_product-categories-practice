@@ -1,9 +1,27 @@
+// import { useState } from 'react';
+
 export default function ProductTable({ products }) {
   if (products.length === 0) {
     return (
       <p data-cy="NoMatchingMessage">No products matching selected criteria</p>
     );
   }
+
+  // const [sortBy, setSortBy] = useState(null);
+  // // 'up' | 'down' | null - direction
+  // const [sortDirection, setSortDirection] = useState(null);
+
+  // const handleSortBy = field => {
+  //   if (sortBy !== field) {
+  //     setSortBy(field);
+  //     setSortDirection('up');
+  //   } else if (sortDirection === 'up') {
+  //     setSortDirection('down');
+  //   } else {
+  //     setSortBy(null);
+  //     setSortDirection(null);
+  //   }
+  // };
 
   return (
     <table

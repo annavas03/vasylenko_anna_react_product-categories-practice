@@ -1,15 +1,27 @@
 export default function FilterNavigation({
   users,
+  categories,
   selectedOwner,
   onOwnerChange,
   searchQuery,
   onSearchQueryChange,
+  selectedCategories,
+  onCategoryChange,
 }) {
   const isInputEmpty = searchQuery === '';
 
   const handleResetFilters = () => {
     onOwnerChange(0);
     onSearchQueryChange('');
+    onCategoryChange([]);
+  };
+
+  const handleCategory = categoryId => {
+    onCategoryChange(
+      selectedCategories.includes(categoryId)
+        ? selectedCategories.filter(id => id !== categoryId)
+        : [...selectedCategories, categoryId],
+    );
   };
 
   return (
@@ -80,25 +92,35 @@ export default function FilterNavigation({
         <a
           href="#/"
           data-cy="AllCategories"
-          className="button is-success mr-6 is-outlined"
+          className={`button is-success mr-6 ${
+            selectedCategories.length > 0 ? 'is-outlined' : ''
+          }`}
+          onClick={event => {
+            event.preventDefault();
+            onCategoryChange([]);
+          }}
         >
           All
         </a>
 
-        <a data-cy="Category" className="button mr-2 my-1 is-info" href="#/">
-          Category 1
-        </a>
+        {categories.map(category => {
+          const isSelected = selectedCategories.includes(category.id);
 
-        <a data-cy="Category" className="button mr-2 my-1" href="#/">
-          Category 2
-        </a>
-
-        <a data-cy="Category" className="button mr-2 my-1 is-info" href="#/">
-          Category 3
-        </a>
-        <a data-cy="Category" className="button mr-2 my-1" href="#/">
-          Category 4
-        </a>
+          return (
+            <a
+              data-cy="Category"
+              className={`button mr-2 my-1 ${isSelected ? 'is-info' : ''}`}
+              href="#/"
+              key={category.id}
+              onClick={event => {
+                event.preventDefault();
+                handleCategory(category.id);
+              }}
+            >
+              {category.title}
+            </a>
+          );
+        })}
       </div>
 
       <div className="panel-block">

@@ -24,6 +24,7 @@ const products = productsFromServer.map(product => {
 export const App = () => {
   const [selectedOwner, setSelectedOwner] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   const visibleProducts = products.filter(product => {
     const filterByOwner =
@@ -33,7 +34,11 @@ export const App = () => {
       .toLowerCase()
       .includes(searchQuery.trim().toLowerCase());
 
-    return filterByOwner && filterByInput;
+    const filterByCategory =
+      selectedCategories.length === 0 ||
+      selectedCategories.includes(product.category.id);
+
+    return filterByOwner && filterByInput && filterByCategory;
   });
 
   return (
@@ -44,10 +49,13 @@ export const App = () => {
         <div className="block">
           <FilterNavigation
             users={usersFromServer}
+            categories={categoriesFromServer}
             selectedOwner={selectedOwner}
             onOwnerChange={setSelectedOwner}
             searchQuery={searchQuery}
             onSearchQueryChange={setSearchQuery}
+            selectedCategories={selectedCategories}
+            onCategoryChange={setSelectedCategories}
           />
         </div>
 
