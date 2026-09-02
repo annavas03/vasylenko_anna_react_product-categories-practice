@@ -1,24 +1,39 @@
-export default function FilterNavigation() {
+export default function FilterNavigation({
+  users,
+  selectedOwner,
+  onOwnerChange,
+}) {
   return (
     <nav className="panel">
       <p className="panel-heading">Filters</p>
 
       <p className="panel-tabs has-text-weight-bold">
-        <a data-cy="FilterAllUsers" href="#/">
+        <a
+          data-cy="FilterAllUsers"
+          href="#/"
+          className={selectedOwner === 0 ? 'is-active' : ''}
+          onClick={e => {
+            e.preventDefault();
+            onOwnerChange(0);
+          }}
+        >
           All
         </a>
 
-        <a data-cy="FilterUser" href="#/">
-          User 1
-        </a>
-
-        <a data-cy="FilterUser" href="#/" className="is-active">
-          User 2
-        </a>
-
-        <a data-cy="FilterUser" href="#/">
-          User 3
-        </a>
+        {users.map(user => (
+          <a
+            data-cy="FilterUser"
+            href="#/"
+            key={user.id}
+            className={selectedOwner === user.id ? 'is-active' : ''}
+            onClick={event => {
+              event.preventDefault();
+              onOwnerChange(user.id);
+            }}
+          >
+            {user.name}
+          </a>
+        ))}
       </p>
 
       <div className="panel-block">

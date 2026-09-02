@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
-import React from 'react';
+import React, { useState } from 'react';
 import FilterNavigation from './components/FilterNavigation/FilterNavigation';
 import './App.scss';
 import ProductTable from './components/ProductTable/ProductTable';
@@ -22,17 +22,31 @@ const products = productsFromServer.map(product => {
 });
 
 export const App = () => {
+  const [selectedOwner, setSelectedOwner] = useState(0);
+
+  const visibleProducts = products.filter(product => {
+    if (selectedOwner === 0) {
+      return true;
+    }
+
+    return product.user?.id === selectedOwner;
+  });
+
   return (
     <div className="section">
       <div className="container">
         <h1 className="title">Product Categories</h1>
 
         <div className="block">
-          <FilterNavigation />
+          <FilterNavigation
+            users={usersFromServer}
+            selectedOwner={selectedOwner}
+            onOwnerChange={setSelectedOwner}
+          />
         </div>
 
         <div className="box table-container">
-          <ProductTable products={products} />
+          <ProductTable products={visibleProducts} />
         </div>
       </div>
     </div>
