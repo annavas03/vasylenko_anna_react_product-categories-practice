@@ -23,13 +23,17 @@ const products = productsFromServer.map(product => {
 
 export const App = () => {
   const [selectedOwner, setSelectedOwner] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const visibleProducts = products.filter(product => {
-    if (selectedOwner === 0) {
-      return true;
-    }
+    const filterByOwner =
+      selectedOwner === 0 || product.user?.id === selectedOwner;
 
-    return product.user?.id === selectedOwner;
+    const filterByInput = product.name
+      .toLowerCase()
+      .includes(searchQuery.trim().toLowerCase());
+
+    return filterByOwner && filterByInput;
   });
 
   return (
@@ -42,6 +46,8 @@ export const App = () => {
             users={usersFromServer}
             selectedOwner={selectedOwner}
             onOwnerChange={setSelectedOwner}
+            searchQuery={searchQuery}
+            onSearchQueryChange={setSearchQuery}
           />
         </div>
 

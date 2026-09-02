@@ -2,7 +2,11 @@ export default function FilterNavigation({
   users,
   selectedOwner,
   onOwnerChange,
+  searchQuery,
+  onSearchQueryChange,
 }) {
+  const isInputEmpty = searchQuery === '';
+
   return (
     <nav className="panel">
       <p className="panel-heading">Filters</p>
@@ -43,17 +47,27 @@ export default function FilterNavigation({
             type="text"
             className="input"
             placeholder="Search"
-            value="qwe"
+            value={searchQuery}
+            onChange={event => {
+              onSearchQueryChange(event.target.value);
+            }}
           />
 
           <span className="icon is-left">
             <i className="fas fa-search" aria-hidden="true" />
           </span>
 
-          <span className="icon is-right">
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-            <button data-cy="ClearButton" type="button" className="delete" />
-          </span>
+          {!isInputEmpty && (
+            <span className="icon is-right">
+              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+              <button
+                data-cy="ClearButton"
+                type="button"
+                className="delete"
+                onClick={() => onSearchQueryChange('')}
+              />
+            </span>
+          )}
         </p>
       </div>
 
