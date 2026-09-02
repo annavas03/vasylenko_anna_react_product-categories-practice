@@ -7,6 +7,11 @@ export default function FilterNavigation({
 }) {
   const isInputEmpty = searchQuery === '';
 
+  const handleResetFilters = () => {
+    onOwnerChange(0);
+    onSearchQueryChange('');
+  };
+
   return (
     <nav className="panel">
       <p className="panel-heading">Filters</p>
@@ -101,6 +106,10 @@ export default function FilterNavigation({
           data-cy="ResetAllButton"
           href="#/"
           className="button is-link is-outlined is-fullwidth"
+          onClick={event => {
+            event.preventDefault();
+            handleResetFilters();
+          }}
         >
           Reset all filters
         </a>
